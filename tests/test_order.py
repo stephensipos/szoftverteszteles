@@ -24,13 +24,13 @@ def add_product_to_cart(driver, url, id_product, qty=1):
         "id_product": f"{id_product}"
     }
 
-    cookies = driver.get_cookies()
-    session = requests.Session()
-    for cookie in cookies:
-        session.cookies.set(cookie['name'], cookie['value'], domain=cookie["domain"], path=cookie["path"])
+    driver.request("POST", url, data=data)
 
-    response = session.post(url, data=data)
-
+    # cookies = driver.get_cookies()
+    # session = requests.Session()
+    # for cookie in cookies:
+    #     session.cookies.set(cookie['name'], cookie['value'], domain=cookie["domain"], path=cookie["path"])
+    # response = session.post(url, data=data)
 
 class TestAuthentication(BaseTest):
     start_location = "/index.php?controller=order"
@@ -62,12 +62,8 @@ class TestAuthentication(BaseTest):
 
     def test_one_item_in_caret_no_empty_caret_warning_is_not_displayed(self, driver):
         driver.get(self.host)
-        sleep(5)
         add_product_to_cart(driver, driver.current_url, 1, qty=1)
-        sleep(5)
         self.open_start_location(driver)
-        sleep(5)
-        add_product_to_cart(driver, driver.current_url, 1, qty=1)
         
         empty_cart_warning = self.locators["empty_cart_warning"].find_on(driver)
 
