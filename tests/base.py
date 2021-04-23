@@ -26,7 +26,7 @@ class Locator():
 def driver():
     driver = Firefox()
     yield driver
-    #driver.quit()
+    driver.quit()
 
 class BaseTest():
     host = "http://automationpractice.com"
